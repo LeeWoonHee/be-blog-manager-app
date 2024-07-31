@@ -12,9 +12,13 @@ export class BlogRepository {
   async saveBlog(createBlogDto: CreateBlogDto): Promise<Blog> {
     const { description, title } = createBlogDto;
     const blogLength = await this.prisma.blog.count();
+    const allBlog = await this.prisma.blog.findMany();
+    console.log('asdasdasdasd');
+    console.log(allBlog[blogLength - 1].id + 1);
+
     if (blogLength > 0) {
       return this.prisma.blog.create({
-        data: { id: blogLength + 1, title, description },
+        data: { id: allBlog[blogLength - 1].id + 1, title, description },
       });
     } else {
       return this.prisma.blog.create({
